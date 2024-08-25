@@ -62,21 +62,27 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    jack.enable = true;
+    wireplumber.configPackages = [
+	(pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluez.conf" ''
+	      monitor.bluez.properties = {
+		bluez5.enable-sbc-xq = true
+		bluez5.enable-msbc = true
+		bluez5.enable-hw-volume = true
+		bluez5.headset-roles = [hsp_hs hsp_ag hfp_hf hfp_ag]
+	      }
+    '')
+   ];
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.<user> = { # replace <user> with your actual user
+  users.users.<user> = {
     isNormalUser = true;
     description = "<user>";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -90,6 +96,13 @@
 
   # Install steam
   programs.steam.enable = true;
+
+  # Install bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true;
+
+  # Enable pulseaudio
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -106,7 +119,7 @@
    polybar # Taskbar
    rofi # Search menu
    pulseaudio # Sound
-   blueman # Bluetooth
+#   blueman # Bluetooth
    findutils # locate and find command
    docker-compose
    flameshot # Screenshots
@@ -126,6 +139,13 @@
 			Restart = "always";
 			ExecStart = "${pkgs.syncthing}/bin/syncthing serve --no-browser --no-restart --logflags=0";
 		};
+	};
+	
+	mpris-proxy = {
+		    description = "Mpris proxy";
+		    after = [ "network.target" "sound.target" ];
+		    wantedBy = [ "default.target" ];
+		    serviceConfig.ExecStart = "${pkgs.bluez}/bin/mpris-proxy";	
 	};
  };
 
