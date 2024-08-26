@@ -4,10 +4,15 @@
 
 { config, pkgs, ... }:
 
+let
+  home-manager = builtins.fetchTarball "https://github.com/nix-community/home-manager/archive/master.tar.gz";
+in
+
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./home-manager.nix
     ];
 
   # Bootloader.
@@ -82,11 +87,26 @@
   users.users.<user> = {
     isNormalUser = true;
     description = "<user>";
-    extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "libvirtd" "qemu-libvirtd"];
     packages = with pkgs; [
     #  thunderbird
     ];
   };
+
+  # Defines user for testvm
+  users.users.nixosvmtest.isSystemUser = true ;
+  users.users.nixosvmtest.initialHashedPassword = "$y$j9T$gAbhZdsHcpwt.vzzaia371$pr2.Es3mvSlgchP6XqYynZ8VnbPJcCvu/0KUloswKp7";
+  users.users.nixosvmtest.group = "nixosvmtest";
+  users.groups.nixosvmtest = {};
+
+  virtualisation.vmVariant = {
+  # following configuration is added only when building VM with build-vm
+  virtualisation = {
+    memorySize =  2048; # Use 2048MiB memory.
+    cores = 3;         
+   };
+  };
+
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -124,6 +144,10 @@
    docker-compose
    flameshot # Screenshots
    alacritty # Terminal
+   python3 # python
+   ansible # Ansible
+   brave # browser
+   vagrant # VMs
   #  wget
   ];
 
@@ -156,6 +180,11 @@
    enable = true;
    setSocketVariable = true;
   };
+
+  # Enable libvirt
+  virtualisation.libvirtd.enable = true;
+  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
+  programs.virt-manager.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
