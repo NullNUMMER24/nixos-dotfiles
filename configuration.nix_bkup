@@ -4,7 +4,6 @@
 
 { config, pkgs, ... }:
 
-
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -14,7 +13,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.systemd-boot.configurationLimit = 10;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -29,22 +27,21 @@
   # Set your time zone.
   time.timeZone = "Europe/Zurich";
 
-  # Enable nix-commands
-  nix.settings.experimental-features = [ "nix-command" ];
-
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  # Configure i3 to start automatically
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
 
-  services.xserver = {
-    enable = true;
-    windowManager.i3 = {
-      enable = true;
-      package = pkgs.i3;
-    };
-  };
+	  # Enables Nvidia drivers
+  services.xserver.videoDrivers = [ "nvidia" ];
 
+  # Enable the Deepin Desktop Environment.
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.desktopManager.deepin.enable = true;
+
+  # Enable i3
+  #services.xserver.windowManager.i3.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -67,17 +64,11 @@
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    jack.enable = true;
-    wireplumber.configPackages = [
-	(pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluez.conf" ''
-	      monitor.bluez.properties = {
-		bluez5.enable-sbc-xq = true
-		bluez5.enable-msbc = true
-		bluez5.enable-hw-volume = true
-		bluez5.headset-roles = [hsp_hs hsp_ag hfp_hf hfp_ag]
-	      }
-    '')
-   ];
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -87,33 +78,11 @@
   users.users.jamie = {
     isNormalUser = true;
     description = "jamie";
-    extraGroups = [ "networkmanager" "wheel" "docker" "audio" "libvirtd" "qemu-libvirtd"];
+    extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
     #  thunderbird
     ];
   };
-
-  #home-manager.nixosModules.home-manager.users.jamie = {
-  #  /* The home.stateVersion option does not have a default and must be set */
-  #  home.stateVersion = "18.09";
-  #  /* Here goes the rest of your home-manager config, e.g. home.packages = [ pkgs.foo ]; */
-  #};
-
-
-  # Defines user for testvm
-  users.users.nixosvmtest.isSystemUser = true ;
-  users.users.nixosvmtest.initialHashedPassword = "$y$j9T$gAbhZdsHcpwt.vzzaia371$pr2.Es3mvSlgchP6XqYynZ8VnbPJcCvu/0KUloswKp7";
-  users.users.nixosvmtest.group = "nixosvmtest";
-  users.groups.nixosvmtest = {};
-
-  virtualisation.vmVariant = {
-  # following configuration is added only when building VM with build-vm
-  virtualisation = {
-    memorySize =  2048; # Use 2048MiB memory.
-    cores = 3;         
-   };
-  };
-
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -123,13 +92,6 @@
 
   # Install steam
   programs.steam.enable = true;
-
-  # Install bluetooth
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true;
-
-  # Enable pulseaudio
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -142,25 +104,14 @@
    syncthing # Filesync 
    obsidian # Documentations
    i3
+   i3lock-fancy-rapid # Lock screen
    polybar # Taskbar
    rofi # Search menu
    pulseaudio # Sound
-#   blueman # Bluetooth
+   blueman # Bluetooth
    findutils # locate and find command
    docker-compose
    flameshot # Screenshots
-   alacritty # Terminal
-   python3 # python
-   ansible # Ansible
-   brave # browser
-   vagrant # VMs
-   keepassxc # pw manager
-   home-manager
-   yubikey-manager
-   yubikey-personalization
-   arandr # used for monitors
-   autorandr # used to save monitor setup
-   killall # used to kill several processes
   #  wget
   ];
 
@@ -177,16 +128,8 @@
 			ExecStart = "${pkgs.syncthing}/bin/syncthing serve --no-browser --no-restart --logflags=0";
 		};
 	};
-	
-	mpris-proxy = {
-		    description = "Mpris proxy";
-		    after = [ "network.target" "sound.target" ];
-		    wantedBy = [ "default.target" ];
-		    serviceConfig.ExecStart = "${pkgs.bluez}/bin/mpris-proxy";	
-	};
  };
 
-  programs.i3lock.enable = true; # Lock screen
   # Start docker
   virtualisation.docker.enable = true;
   # Rootless docker
@@ -194,11 +137,6 @@
    enable = true;
    setSocketVariable = true;
   };
-
-  # Enable libvirt
-  virtualisation.libvirtd.enable = true;
-  boot.kernelModules = [ "kvm-amd" "kvm-intel" ];
-  programs.virt-manager.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
