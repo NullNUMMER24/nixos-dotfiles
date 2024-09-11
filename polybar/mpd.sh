@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 music_percent() {
     comp_col="#81a2be" # stores the colour of the % complete text
 

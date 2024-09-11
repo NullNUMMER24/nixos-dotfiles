@@ -6,7 +6,7 @@
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango: Noto Sans Regular 10
+font pango: Fira Code Nerd Font 10
 
 # set the mod key to the winkey:
 set $mod Mod4
@@ -111,7 +111,7 @@ bindsym $mod+b exec blueman-manager
 bindsym $mod+Shift+e exec ~/.config/i3/scripts/powermenu
 
 # Lock the system
-bindsym $mod+x exec i3lock-fancy-rapid # before -->/home/$USER/.config/i3/scripts/lock
+bindsym $mod+x exec ~/.config/i3/i3lock.sh
 #bindsym $mod+x exec i3lock
 
 # reload the configuration file
@@ -320,7 +320,7 @@ exec --no-startup-id xset s 480 dpms 600 600 600
 #exec --no-startup-id /usr/bin/dunst --config ~/.config/dunst/dunstrc
 # may yneed to run dbus-launch explicitly: 
 #exec --no-startup-id dbus-launch /usr/bin/dunst
-exec --no-startup-id /usr/bin/dunst
+exec --no-startup-id dunst
 ###############
 # system tray #
 ###############

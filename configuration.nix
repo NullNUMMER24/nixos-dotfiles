@@ -57,28 +57,10 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    jack.enable = true;
-    wireplumber.configPackages = [
-	(pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/10-bluez.conf" ''
-	      monitor.bluez.properties = {
-		bluez5.enable-sbc-xq = true
-		bluez5.enable-msbc = true
-		bluez5.enable-hw-volume = true
-		bluez5.headset-roles = [hsp_hs hsp_ag hfp_hf hfp_ag]
-	      }
-    '')
-   ];
-  };
+ 
+ # Enable pulseaudio
+  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.support32Bit = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -129,8 +111,6 @@
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
 
-  # Enable pulseaudio
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -144,8 +124,8 @@
    i3
    polybar # Taskbar
    rofi # Search menu
-   pulseaudio # Sound
-#   blueman # Bluetooth
+   dunst # Notification manager
+   libnotify # used for notifications
    findutils # locate and find command
    docker-compose
    flameshot # Screenshots
@@ -161,6 +141,8 @@
    arandr # used for monitors
    autorandr # used to save monitor setup
    killall # used to kill several processes
+   pavucontrol # control panel for pipewire
+   nerdfonts # fancy icons
   #  wget
   ];
 

@@ -1,0 +1,223 @@
+[global]
+    ### Display ###
+
+    # Which monitor should the notifications be displayed on.
+    monitor = 0
+
+    # Display notification on focused monitor.  Possible modes are:
+    follow = none
+
+    ### Geometry ###
+
+    # constant width of 300
+    width = 300
+
+    # The height of a single notification, excluding the frame.
+    height = (0, 300)
+
+    # Position the notification in the top right corner
+    origin = top-right
+
+    # Offset from the origin
+    offset = (10, 50)
+
+    # Scale factor. It is auto-detected if value is 0.
+    scale = 0
+
+    # Maximum number of notification (0 means no limit)
+    notification_limit = 20
+
+    ### Progress bar ###
+
+    # Turn on the progress bar
+    progress_bar = true
+
+    # Set the progress bar height
+    progress_bar_height = 10
+
+    # Set the frame width of the progress bar
+    progress_bar_frame_width = 1
+
+    # Set the minimum width for the progress bar
+    progress_bar_min_width = 150
+
+    # Set the maximum width for the progress bar
+    progress_bar_max_width = 300
+
+    # Corner radius for the progress bar
+    progress_bar_corner_radius = 0
+
+    # Define which corners to round when drawing the progress bar
+    progress_bar_corners = all
+
+    # Corner radius for the icon image
+    icon_corner_radius = 0
+
+    # Define which corners to round when drawing the icon image
+    icon_corners = all
+
+    # Show how many messages are currently hidden
+    indicate_hidden = yes
+
+    # The transparency of the window
+    transparency = 0
+
+    # Draw a line of "separator_height" pixel height between two notifications
+    separator_height = 2
+
+    # Padding between text and separator
+    padding = 8
+
+    # Horizontal padding
+    horizontal_padding = 8
+
+    # Padding between text and icon
+    text_icon_padding = 0
+
+    # Defines width in pixels of frame around the notification window
+    frame_width = 3
+
+    # Defines color of the frame around the notification window
+    frame_color = "#aaaaaa"
+
+    # Size of gap to display between notifications - requires a compositor
+    gap_size = 0
+
+    # Define a color for the separator
+    separator_color = frame
+
+    # Sort type
+    sort = yes
+
+    # Don't remove messages if the user is idle
+    idle_threshold = 120
+
+    ### Text ###
+
+    font = Monospace 8
+
+    # The spacing between lines
+    line_height = 0
+
+    # Markup parsing
+    markup = full
+
+    # The format of the message
+    format = "<b>%s</b>\n%b"
+
+    # Alignment of message text
+    alignment = left
+
+    # Vertical alignment of message text and icon
+    vertical_alignment = center
+
+    # Show age of message if older than show_age_threshold seconds
+    show_age_threshold = 60
+
+    # Specify where to make an ellipsis in long lines
+    ellipsize = middle
+
+    # Ignore newlines '\n' in notifications
+    ignore_newline = no
+
+    # Stack together notifications with the same content
+    stack_duplicates = true
+
+    # Hide the count of stacked notifications with the same content
+    hide_duplicate_count = false
+
+    # Display indicators for URLs (U) and actions (A)
+    show_indicators = yes
+
+    ### Icons ###
+
+    # Recursive icon lookup
+    enable_recursive_icon_lookup = true
+
+    # Set icon theme
+    icon_theme = Adwaita
+
+    # Align icons left/right/top/off
+    icon_position = left
+
+    # Scale small icons up to this size
+    min_icon_size = 32
+
+    # Scale larger icons down to this size
+    max_icon_size = 128
+
+    # Paths to default icons
+    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+
+    ### History ###
+
+    # Should a notification from history be sticky or timeout
+    sticky_history = yes
+
+    # Maximum amount of notifications kept in history
+    history_length = 20
+
+    ### Misc/Advanced ###
+
+    # dmenu path
+    dmenu = /usr/bin/dmenu -p dunst:
+
+    # Browser for opening urls in context menu
+    browser = /usr/bin/xdg-open
+
+    # Always run rule-defined scripts
+    always_run_script = true
+
+    # Define the title of the windows spawned by dunst (X11 only)
+    title = Dunst
+
+    # Define the class of the windows spawned by dunst (X11 only)
+    class = Dunst
+
+    # Define the corner radius of the notification window
+    corner_radius = 0
+
+    # Define which corners to round when drawing the window
+    corners = all
+
+    # Ignore the dbus closeNotification message
+    ignore_dbusclose = false
+
+    ### Wayland ###
+
+    # Uncomment this if you want notifications to appear under fullscreen applications
+    # layer = top
+
+    # Set this to true to use X11 output on Wayland
+    force_xwayland = false
+
+    ### Legacy ###
+
+    # Use the Xinerama extension instead of RandR for multi-monitor support
+    force_xinerama = false
+
+    ### Mouse ###
+
+    # Defines list of actions for each mouse event
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[urgency_low]
+    background = "#222222"
+    foreground = "#888888"
+    timeout = 10
+
+[urgency_normal]
+    background = "#285577"
+    foreground = "#ffffff"
+    timeout = 10
+    override_pause_level = 30
+
+[urgency_critical]
+    background = "#900000"
+    foreground = "#ffffff"
+    frame_color = "#ff0000"
+    timeout = 0
+    override_pause_level = 60
+

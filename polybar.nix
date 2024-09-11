@@ -9,6 +9,7 @@
     ".config/polybar/discord.sh".source = /etc/nixos/polybar/discord.sh;
     ".config/polybar/mpd.sh".source = /etc/nixos/polybar/mpd.sh;
     ".config/polybar/spotify.sh".source = /etc/nixos/polybar/spotify.sh;
+    ".config/polybar/GetWorkspace.sh".source = /etc/nixos/polybar/GetWorkspace.sh;
   };
 
 }
